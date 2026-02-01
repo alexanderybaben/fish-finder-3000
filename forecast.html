@@ -44,13 +44,13 @@
             <div class="input-grid">
               <label>
                 Region
-                <select>
+                <select name="region">
                   <option>South-Central</option>
                 </select>
               </label>
               <label>
                 Stream name
-                <select>
+                <select name="stream">
                   <option>Big Wood River</option>
                   <option>Warm Springs Creek</option>
                   <option>Trail Creek</option>
@@ -58,7 +58,7 @@
               </label>
               <label>
                 Time of day
-                <select>
+                <select name="timeOfDay">
                   <option>Early Morning</option>
                   <option>Late Morning</option>
                   <option>Midday</option>
@@ -70,7 +70,7 @@
               </label>
               <label>
                 Month
-                <select>
+                <select name="month">
                   <option>January</option>
                   <option>February</option>
                   <option>March</option>
@@ -87,15 +87,19 @@
               </label>
               <label>
                 Water temperature (°F)
-                <input type="number" placeholder="52" />
+                <input name="waterTemp" type="number" placeholder="52" />
               </label>
               <label>
                 Flow rate (cfs)
-                <input type="number" placeholder="1250" />
+                <input name="flowRate" type="number" placeholder="1250" />
+              </label>
+              <label>
+                Avg stream width (ft)
+                <input name="streamWidth" type="number" placeholder="18" />
               </label>
               <label>
                 Water clarity
-                <select>
+                <select name="clarity">
                   <option>Clear</option>
                   <option>Slightly murky</option>
                   <option>Murky</option>
@@ -103,7 +107,7 @@
               </label>
               <label>
                 Weather
-                <select>
+                <select name="weather">
                   <option>Clear</option>
                   <option>Overcast</option>
                   <option>Rainy</option>
@@ -112,11 +116,15 @@
               </label>
               <label>
                 Light level
-                <select>
+                <select name="light">
                   <option>Bright</option>
                   <option>Dim</option>
                   <option>Dark</option>
                 </select>
+              </label>
+              <label>
+                Date
+                <input name="date" type="date" />
               </label>
             </div>
             <button class="button primary" type="submit">Calculate top 3 species</button>
@@ -132,65 +140,7 @@
               explains how accurate the model is with your inputs.
             </p>
           </div>
-          <div class="result-grid">
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Rainbow trout</h3>
-                <span class="result-score">38% likelihood</span>
-              </div>
-              <div class="result-accuracy">Algorithm accuracy: 92%</div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Parachute Adams</li>
-                  <li>Beadhead Pheasant Tail</li>
-                  <li>Olive Woolly Bugger</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Mid-column drifts along shaded seams and soft edges.</p>
-              </div>
-            </article>
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Brown trout</h3>
-                <span class="result-score">31% likelihood</span>
-              </div>
-              <div class="result-accuracy">Algorithm accuracy: 88%</div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Rusty Midge</li>
-                  <li>Hare’s Ear Nymph</li>
-                  <li>Mini Sculpin Streamer</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Deep runs, undercut banks, and slow current transitions.</p>
-              </div>
-            </article>
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Cutthroat trout</h3>
-                <span class="result-score">24% likelihood</span>
-              </div>
-              <div class="result-accuracy">Algorithm accuracy: 85%</div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Elk Hair Caddis</li>
-                  <li>Soft Hackle Wet Fly</li>
-                  <li>Perdigon Nymph</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Shallow riffles and active surface lanes at low light.</p>
-              </div>
-            </article>
-          </div>
+          <div class="result-grid" id="resultGrid"></div>
         </section>
       </main>
 
@@ -201,5 +151,403 @@
         </div>
       </footer>
     </div>
+    <script>
+      const plannerDB = {
+        "Big Wood River": {
+          displayName: "Big Wood River",
+          speciesObserved: ["rainbow", "brown", "whitefish", "bull"],
+          stockingRecords: [
+            { species: "Rainbow Trout - Triploid", quantity: 4200, year: 2021 },
+            { species: "Rainbow Trout", quantity: 3100, year: 2019 },
+          ],
+          defaultWidth: 24,
+          defaultCfs: 180,
+        },
+        "Warm Springs Creek": {
+          displayName: "Warm Springs Creek",
+          speciesObserved: ["rainbow", "brook"],
+          stockingRecords: [{ species: "Rainbow Trout", quantity: 1500, year: 2020 }],
+          defaultWidth: 10,
+          defaultCfs: 55,
+        },
+        "Trail Creek": {
+          displayName: "Trail Creek",
+          speciesObserved: ["rainbow", "brown", "brook", "whitefish"],
+          stockingRecords: [{ species: "Rainbow Trout", quantity: 2800, year: 2022 }],
+          defaultWidth: 16,
+          defaultCfs: 95,
+        },
+      };
+
+      const traitsDB = {
+        rainbow: {
+          name: "Rainbow trout",
+          preferredMin: 50,
+          preferredMax: 64,
+          stressAbove: 70,
+          spawnMonths: [3, 4, 5],
+          habitat: "Seams, transitions, tailouts; moderate speed; 1–5 ft",
+          notes: "Generalist holding water, thrives in varied current.",
+        },
+        brown: {
+          name: "Brown trout",
+          preferredMin: 48,
+          preferredMax: 62,
+          stressAbove: 68,
+          spawnMonths: [10, 11, 12],
+          habitat: "Undercuts, deep slots, shaded lanes; slow edge next to fast; 2–4+ ft",
+          notes: "Low-light predator; favors cover and structure.",
+        },
+        brook: {
+          name: "Brook trout",
+          preferredMin: 46,
+          preferredMax: 58,
+          stressAbove: 66,
+          spawnMonths: [9, 10],
+          habitat: "Pocket water, plunge pools, cover; micro-eddies; 0.5–2 ft",
+          notes: "Coldwater specialist, prefers smaller streams.",
+        },
+        bull: {
+          name: "Bull trout",
+          preferredMin: 42,
+          preferredMax: 55,
+          stressAbove: 62,
+          spawnMonths: [8, 9],
+          habitat: "Deep cold cover, wood/boulders, cold inflow seams; 2–5 ft",
+          notes: "Prefers cold, connected habitat with depth.",
+        },
+        whitefish: {
+          name: "Mountain whitefish",
+          preferredMin: 48,
+          preferredMax: 60,
+          stressAbove: 68,
+          spawnMonths: [11, 12],
+          habitat: "Deep runs/tailouts, near-bottom drift; 2–5 ft",
+          notes: "Often in deeper runs and tailouts.",
+        },
+      };
+
+      const basePrior = {
+        rainbow: 0.32,
+        brook: 0.22,
+        brown: 0.18,
+        whitefish: 0.18,
+        bull: 0.06,
+      };
+
+      const flyFamilies = {
+        dry: "Caddis adults, small mayfly dries/cripples, terrestrials",
+        nymph: "Caddis pupa, mayfly nymphs, small stoneflies",
+        wet: "Soft hackles / swung emergers",
+        streamer: "Small sculpin/leech streamers near banks & deep slots",
+      };
+
+      const form = document.querySelector(".forecast-form");
+      const resultGrid = document.getElementById("resultGrid");
+
+      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+      const gaussian = (x, mu, sigma) =>
+        Math.exp(-0.5 * Math.pow((x - mu) / sigma, 2));
+
+      const parseNumber = (value, fallback) => {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : fallback;
+      };
+
+      const mapTimeOfDay = (value) => {
+        const lookup = {
+          "Early Morning": 7,
+          "Late Morning": 10,
+          Midday: 13,
+          "Late Afternoon": 16,
+          Evening: 19,
+          Dusk: 21,
+          Midnight: 0,
+        };
+        return lookup[value] ?? 10;
+      };
+
+      const getMonth = (monthName) => {
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        return months.indexOf(monthName) + 1 || 6;
+      };
+
+      const skyToLight = (sky) => {
+        if (sky === "Clear") return 1.0;
+        if (sky === "Partly Cloudy") return 0.6;
+        if (sky === "Overcast") return 0.3;
+        if (sky === "Rainy") return 0.2;
+        if (sky === "Snowy") return 0.2;
+        return 0.3;
+      };
+
+      const streamScore = (species, width, unitFlow) => {
+        const small = width <= 12;
+        const pushy = unitFlow >= 6;
+        let score = 1.0;
+        if (species === "brook") score *= small ? 1.15 : 0.9;
+        if (species === "brown") score *= small ? 0.9 : 1.1;
+        if (species === "whitefish") score *= small ? 0.95 : 1.08;
+        if (species === "rainbow") score *= pushy ? 1.05 : 1.0;
+        if (species === "bull") score *= pushy ? 0.95 : 1.02;
+        return clamp(score, 0.75, 1.15);
+      };
+
+      const tempScore = (speciesTraits, temp) => {
+        const mu = (speciesTraits.preferredMin + speciesTraits.preferredMax) / 2;
+        const sigma = Math.max(
+          4,
+          (speciesTraits.preferredMax - speciesTraits.preferredMin) / 2.5
+        );
+        let score = gaussian(temp, mu, sigma);
+        if (temp > speciesTraits.stressAbove) {
+          score *= 0.4;
+        }
+        return clamp(score, 0.02, 1);
+      };
+
+      const bestWindow = (temp, month, sky, species) => {
+        const isSummer = [6, 7, 8, 9].includes(month);
+        const clearish = ["Clear", "Overcast"].includes(sky);
+        if (temp < 48) return "11:00 AM – 4:00 PM";
+        if (isSummer && clearish) {
+          if (species === "brown") return "7:00 PM – 10:00 PM";
+          return "5:30 PM – 8:30 PM";
+        }
+        return "6:30 AM – 9:30 AM or 5:00 PM – 8:00 PM";
+      };
+
+      const flyMix = (species, temp, month, hour, sky) => {
+        let weights = { dry: 0.35, nymph: 0.45, wet: 0.2, streamer: 0.15 };
+        if (temp >= 52 && temp <= 66) weights.dry += 0.1;
+        if (temp < 50) weights.nymph += 0.15;
+        const isSummer = [6, 7, 8, 9].includes(month);
+        if (isSummer && hour >= 17 && hour <= 21) {
+          weights.dry += 0.1;
+          weights.wet += 0.05;
+        }
+        if (sky === "Clear" && hour >= 11 && hour <= 16) {
+          weights.dry -= 0.1;
+          weights.nymph += 0.1;
+        }
+        if (species === "brown") {
+          weights.streamer += 0.1;
+          weights.wet += 0.05;
+        }
+        if (species === "bull") {
+          weights.streamer += 0.2;
+        }
+        if (species === "whitefish") {
+          weights.nymph += 0.1;
+        }
+
+        const total = Object.values(weights).reduce((sum, v) => sum + v, 0);
+        Object.keys(weights).forEach((key) => {
+          weights[key] = weights[key] / total;
+        });
+
+        return [
+          { label: "Dry flies", text: flyFamilies.dry },
+          { label: "Nymphs", text: flyFamilies.nymph },
+          { label: "Wet flies", text: flyFamilies.wet },
+          { label: "Streamers", text: flyFamilies.streamer },
+        ];
+      };
+
+      const sizeRange = (species, temp, width, unitFlow) => {
+        const growth = gaussian(temp, 60, 10);
+        const flowPenalty = unitFlow >= 6 ? 0.85 : 1;
+        const widthScale = width <= 12 ? 0.8 : width >= 24 ? 1.1 : 1;
+        const scale = growth * flowPenalty * widthScale;
+
+        const ranges = {
+          rainbow: [7, 22],
+          brook: [5, 16],
+          brown: [8, 26],
+          bull: [6, 30],
+          whitefish: [10, 22],
+        };
+        const [minBase, maxBase] = ranges[species];
+        const minSize = Math.round(minBase * clamp(scale, 0.6, 1.2));
+        const maxSize = Math.round(maxBase * clamp(scale + 0.1, 0.7, 1.3));
+        return `${minSize}–${maxSize} in`;
+      };
+
+      const biteScore = (traits, temp, month, hour, sky) => {
+        const mu = (traits.preferredMin + traits.preferredMax) / 2;
+        const sigma = Math.max(4, (traits.preferredMax - traits.preferredMin) / 2.5);
+        let tempComponent = gaussian(temp, mu, sigma);
+        let timeComponent = 1.0;
+        if (temp < 48 && hour >= 11 && hour <= 16) timeComponent = 1.1;
+        if ([6, 7, 8, 9].includes(month) && sky === "Clear") {
+          if (hour >= 11 && hour <= 16) timeComponent = 0.85;
+          if (hour >= 17 && hour <= 21) timeComponent = 1.1;
+        }
+        let lightComponent = 1 - skyToLight(sky) * 0.15;
+        if (temp > traits.stressAbove) tempComponent *= 0.4;
+        return clamp(tempComponent * timeComponent * lightComponent, 0, 1);
+      };
+
+      const habitatReco = (traits, temp, unitFlow, sky, hour) => {
+        let detail = traits.habitat;
+        if (sky === "Clear" && !(hour >= 17 && hour <= 21)) {
+          detail += " • prioritize shade and stealth";
+        }
+        if (unitFlow >= 6) {
+          detail += " • focus on micro-soft pockets and current breaks";
+        }
+        if (temp < 50) {
+          detail += " • shift slightly deeper/near-bottom lanes";
+        }
+        return detail;
+      };
+
+      const buildResults = (inputs) => {
+        const planner = plannerDB[inputs.stream] ?? null;
+        const evidence =
+          planner?.speciesObserved?.length || planner?.stockingRecords?.length
+            ? "high"
+            : "low";
+        const accuracy =
+          evidence === "high" ? 90 : planner?.stockingRecords?.length ? 80 : 70;
+
+        const unitFlow = inputs.cfs / Math.max(inputs.width, 1);
+        const weights = {};
+        const speciesList = Object.keys(traitsDB);
+
+        speciesList.forEach((species) => {
+          const traits = traitsDB[species];
+          const observed = planner?.speciesObserved?.includes(species) ? 2.2 : 1;
+          let stock = 1.0;
+          if (species === "rainbow" && planner) {
+            const cutoff = new Date().getFullYear() - 8;
+            const total = planner.stockingRecords
+              .filter((record) => record.year >= cutoff)
+              .reduce((sum, record) => {
+                if (record.species.toLowerCase().includes("rainbow")) {
+                  return sum + record.quantity;
+                }
+                return sum;
+              }, 0);
+            stock += clamp(total / 8000, 0, 1.5);
+          }
+          const tempSuit = tempScore(traits, inputs.temp);
+          const streamSuit = streamScore(species, inputs.width, unitFlow);
+          weights[species] =
+            basePrior[species] * observed * stock * tempSuit * streamSuit;
+        });
+
+        const totalWeight = Object.values(weights).reduce((sum, v) => sum + v, 0);
+        const probabilities = speciesList.map((species) => ({
+          species,
+          probability: weights[species] / totalWeight,
+        }));
+        probabilities.sort((a, b) => b.probability - a.probability);
+        const topThree = probabilities.slice(0, 3);
+
+        const cards = topThree
+          .map(({ species, probability }) => {
+            const traits = traitsDB[species];
+            const timeWindow = bestWindow(inputs.temp, inputs.month, inputs.sky, species);
+            const flyRecommendations = flyMix(
+              species,
+              inputs.temp,
+              inputs.month,
+              inputs.hour,
+              inputs.sky
+            );
+            const habitat = habitatReco(traits, inputs.temp, unitFlow, inputs.sky, inputs.hour);
+            return `
+              <article class="result-card">
+                <div class="result-header">
+                  <h3>${traits.name}</h3>
+                  <span class="result-score">${Math.round(
+                    probability * 100
+                  )}% likelihood</span>
+                </div>
+                <div class="result-accuracy">Algorithm accuracy: ${accuracy}%</div>
+                <div class="result-section">
+                  <h4>Expected size range</h4>
+                  <p>${sizeRange(species, inputs.temp, inputs.width, unitFlow)}</p>
+                </div>
+                <div class="result-section">
+                  <h4>Optimal time window</h4>
+                  <p>${timeWindow}</p>
+                </div>
+                <div class="result-section">
+                  <h4>Fly recommendations</h4>
+                  <ul>
+                    ${flyRecommendations
+                      .map((fly) => `<li><strong>${fly.label}:</strong> ${fly.text}</li>`)
+                      .join("")}
+                  </ul>
+                </div>
+                <div class="result-section">
+                  <h4>Depth + water position</h4>
+                  <p>${habitat}</p>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+
+        resultGrid.innerHTML = cards;
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const inputs = {
+          region: form.elements.region.value,
+          stream: form.elements.stream.value,
+          timeOfDay: form.elements.timeOfDay.value,
+          monthName: form.elements.month.value,
+          temp: parseNumber(form.elements.waterTemp.value, 52),
+          cfs: parseNumber(form.elements.flowRate.value, 120),
+          width: parseNumber(form.elements.streamWidth.value, 18),
+          clarity: form.elements.clarity.value,
+          sky: form.elements.weather.value,
+          light: form.elements.light.value,
+          date: form.elements.date.value,
+        };
+
+        const monthFromDate = inputs.date ? new Date(inputs.date).getMonth() + 1 : null;
+        const month = monthFromDate || getMonth(inputs.monthName);
+        const hour = mapTimeOfDay(inputs.timeOfDay);
+
+        buildResults({
+          stream: inputs.stream,
+          temp: inputs.temp,
+          cfs: inputs.cfs,
+          width: inputs.width || plannerDB[inputs.stream]?.defaultWidth || 18,
+          sky: inputs.sky,
+          month,
+          hour,
+        });
+        document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+      });
+
+      buildResults({
+        stream: "Big Wood River",
+        temp: 52,
+        cfs: 120,
+        width: 18,
+        sky: "Overcast",
+        month: 6,
+        hour: 10,
+      });
+    </script>
   </body>
 </html>
