@@ -156,6 +156,13 @@
         "Big Wood River": {
           displayName: "Big Wood River",
           speciesObserved: ["rainbow", "brown", "whitefish", "bull"],
+          preyObserved: ["sculpin"],
+          populationDistribution: {
+            rainbow: 0.6,
+            brown: 0.1,
+            whitefish: 0.05,
+            brook: 0.03,
+          },
           stockingRecords: [
             { species: "Rainbow Trout - Triploid", quantity: 4200, year: 2021 },
             { species: "Rainbow Trout", quantity: 3100, year: 2019 },
@@ -330,7 +337,7 @@
         return "6:30 AM – 9:30 AM or 5:00 PM – 8:00 PM";
       };
 
-      const flyMix = (species, temp, month, hour, sky) => {
+      const flyMix = (species, temp, month, hour, sky, planner) => {
         let weights = { dry: 0.35, nymph: 0.45, wet: 0.2, streamer: 0.15 };
         if (temp >= 52 && temp <= 66) weights.dry += 0.1;
         if (temp < 50) weights.nymph += 0.15;
@@ -352,6 +359,9 @@
         }
         if (species === "whitefish") {
           weights.nymph += 0.1;
+        }
+        if (planner?.preyObserved?.includes("sculpin")) {
+          weights.streamer += 0.1;
         }
 
         const total = Object.values(weights).reduce((sum, v) => sum + v, 0);
@@ -425,6 +435,15 @@
           evidence === "high" ? 90 : planner?.stockingRecords?.length ? 80 : 70;
 
         const unitFlow = inputs.cfs / Math.max(inputs.width, 1);
+        const localBasePrior = planner?.populationDistribution
+          ? {
+              rainbow: planner.populationDistribution.rainbow ?? basePrior.rainbow,
+              brown: planner.populationDistribution.brown ?? basePrior.brown,
+              brook: planner.populationDistribution.brook ?? basePrior.brook,
+              whitefish: planner.populationDistribution.whitefish ?? basePrior.whitefish,
+              bull: basePrior.bull,
+            }
+          : basePrior;
         const weights = {};
         const speciesList = Object.keys(traitsDB);
 
@@ -447,7 +466,7 @@
           const tempSuit = tempScore(traits, inputs.temp);
           const streamSuit = streamScore(species, inputs.width, unitFlow);
           weights[species] =
-            basePrior[species] * observed * stock * tempSuit * streamSuit;
+            localBasePrior[species] * observed * stock * tempSuit * streamSuit;
         });
 
         const totalWeight = Object.values(weights).reduce((sum, v) => sum + v, 0);
@@ -467,7 +486,8 @@
               inputs.temp,
               inputs.month,
               inputs.hour,
-              inputs.sky
+              inputs.sky,
+              planner
             );
             const habitat = habitatReco(traits, inputs.temp, unitFlow, inputs.sky, inputs.hour);
             return `
