@@ -289,7 +289,8 @@ a {
   gap: 0.4rem;
 }
 
-.input-grid input {
+.input-grid input,
+.input-grid select {
   background: #0d1b14;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
@@ -322,6 +323,15 @@ a {
 .result-score {
   font-weight: 600;
   color: var(--accent);
+}
+
+.result-accuracy {
+  font-weight: 600;
+  color: var(--accent-soft);
+  background: rgba(29, 209, 139, 0.12);
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  width: fit-content;
 }
 
 .result-section h4 {

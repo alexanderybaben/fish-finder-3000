@@ -22,7 +22,7 @@
           </div>
           <div class="nav-links">
             <a href="#home">Home</a>
-            <a class="button ghost" href="#forecast">Run the forecast</a>
+            <a class="button ghost" href="forecast.html">Run the forecast</a>
           </div>
         </nav>
       </header>
@@ -30,18 +30,17 @@
       <main>
         <section id="home" class="hero compact-hero">
           <div class="hero-content">
-            <p class="eyebrow">One page. One forecast.</p>
-            <h1>Input every condition, get the top 3 species to chase.</h1>
+            <p class="eyebrow">One place for smarter fly decisions.</p>
+            <h1>Forecast the top three species before you hit the water.</h1>
             <p class="lead">
-              Fish Finder 3000 is a single-page intelligence hub where anglers
-              capture stream conditions, time of day, season, and location. Our
-              model ranks catch probability across key trout and salmon species,
-              then surfaces the top three with matching flies and depth
-              guidance.
+              Fish Finder 3000 is a streamlined home base that turns stream
+              conditions into clear species probabilities, fly picks, and depth
+              guidance. Enter conditions on the forecast page to unlock your
+              top-three results.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="#forecast">Start the inputs</a>
-              <a class="button ghost" href="#results">View sample results</a>
+              <a class="button primary" href="forecast.html">Go to the forecast</a>
+              <a class="button ghost" href="forecast.html#results">See sample results</a>
             </div>
           </div>
           <div class="hero-art">
@@ -54,145 +53,13 @@
                 <div class="map-line"></div>
               </div>
               <div class="map-tags">
-                <span class="tag">Seasonality</span>
-                <span class="tag">Streamflow</span>
-                <span class="tag">Hatch signal</span>
+                <span class="tag">Region-first inputs</span>
+                <span class="tag">Top 3 species</span>
+                <span class="tag">Fly + depth plan</span>
               </div>
             </div>
             <div class="floating-shape shape-one"></div>
             <div class="floating-shape shape-two"></div>
-          </div>
-        </section>
-
-        <section id="forecast" class="section forecast">
-          <div class="section-heading">
-            <p class="eyebrow">Forecast inputs</p>
-            <h2>Tell us everything about your stream and timing.</h2>
-            <p class="section-subtitle">
-              Add as much detail as possible. The engine blends every variable
-              into a probability score, then ranks the top three species.
-            </p>
-          </div>
-          <form class="forecast-form">
-            <div class="input-grid">
-              <label>
-                Stream name
-                <input type="text" placeholder="Upper Deschutes" />
-              </label>
-              <label>
-                Region
-                <input type="text" placeholder="Central Oregon" />
-              </label>
-              <label>
-                Time of day
-                <input type="text" placeholder="Early morning / dusk" />
-              </label>
-              <label>
-                Month + season
-                <input type="text" placeholder="May • Spring runoff" />
-              </label>
-              <label>
-                Water temperature
-                <input type="text" placeholder="52°F" />
-              </label>
-              <label>
-                Flow rate
-                <input type="text" placeholder="1,250 cfs" />
-              </label>
-              <label>
-                Water clarity
-                <input type="text" placeholder="Gin clear / stained" />
-              </label>
-              <label>
-                Weather + light
-                <input type="text" placeholder="Overcast, light wind" />
-              </label>
-              <label>
-                Structure notes
-                <input type="text" placeholder="Deep runs, undercut banks" />
-              </label>
-              <label>
-                Hatch activity
-                <input type="text" placeholder="PMD hatch, midges" />
-              </label>
-              <label>
-                Target depth
-                <input type="text" placeholder="3-6 ft seams" />
-              </label>
-              <label>
-                Additional notes
-                <input type="text" placeholder="Recent rain, boat traffic" />
-              </label>
-            </div>
-            <button class="button primary" type="submit">Calculate top 3 species</button>
-          </form>
-        </section>
-
-        <section id="results" class="section results">
-          <div class="section-heading">
-            <p class="eyebrow">Top 3 results</p>
-            <h2>Probability, fly picks, and depth guidance.</h2>
-            <p class="section-subtitle">
-              The model compares rainbow trout, brown trout, bull trout, brook
-              trout, steelhead, salmon, whitehead, greyling, golden trout, tiger
-              trout, and cutthroat trout, then returns the three most likely.
-            </p>
-          </div>
-          <div class="result-grid">
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Rainbow trout</h3>
-                <span class="result-score">38% likelihood</span>
-              </div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Parachute Adams</li>
-                  <li>Beadhead Pheasant Tail</li>
-                  <li>Olive Woolly Bugger</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Mid-column drifts along shaded seams and soft edges.</p>
-              </div>
-            </article>
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Brown trout</h3>
-                <span class="result-score">31% likelihood</span>
-              </div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Rusty Midge</li>
-                  <li>Hare’s Ear Nymph</li>
-                  <li>Mini Sculpin Streamer</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Deep runs, undercut banks, and slow current transitions.</p>
-              </div>
-            </article>
-            <article class="result-card">
-              <div class="result-header">
-                <h3>Cutthroat trout</h3>
-                <span class="result-score">24% likelihood</span>
-              </div>
-              <div class="result-section">
-                <h4>Fly recommendations</h4>
-                <ul>
-                  <li>Elk Hair Caddis</li>
-                  <li>Soft Hackle Wet Fly</li>
-                  <li>Perdigon Nymph</li>
-                </ul>
-              </div>
-              <div class="result-section">
-                <h4>Depth + water position</h4>
-                <p>Shallow riffles and active surface lanes at low light.</p>
-              </div>
-            </article>
           </div>
         </section>
       </main>

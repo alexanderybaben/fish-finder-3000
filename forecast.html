@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fish Finder 3000 | Forecast Inputs</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <nav class="nav">
+          <div class="brand">
+            <span class="brand-icon">◎</span>
+            <span>Fish Finder 3000</span>
+          </div>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a class="button ghost" href="#forecast">Run the forecast</a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <section id="forecast" class="section forecast">
+          <div class="section-heading">
+            <p class="eyebrow">Forecast inputs</p>
+            <h2>Start with region, then capture every variable.</h2>
+            <p class="section-subtitle">
+              Select the most detailed conditions possible. The engine compares
+              rainbow trout, brown trout, bull trout, brook trout, steelhead,
+              salmon, whitehead, greyling, golden trout, tiger trout, and
+              cutthroat trout, then returns the top three with precision
+              guidance.
+            </p>
+          </div>
+          <form class="forecast-form">
+            <div class="input-grid">
+              <label>
+                Region
+                <select>
+                  <option>South-Central</option>
+                </select>
+              </label>
+              <label>
+                Stream name
+                <select>
+                  <option>Big Wood River</option>
+                  <option>Warm Springs Creek</option>
+                  <option>Trail Creek</option>
+                </select>
+              </label>
+              <label>
+                Time of day
+                <select>
+                  <option>Early Morning</option>
+                  <option>Late Morning</option>
+                  <option>Midday</option>
+                  <option>Late Afternoon</option>
+                  <option>Evening</option>
+                  <option>Dusk</option>
+                  <option>Midnight</option>
+                </select>
+              </label>
+              <label>
+                Month
+                <select>
+                  <option>January</option>
+                  <option>February</option>
+                  <option>March</option>
+                  <option>April</option>
+                  <option>May</option>
+                  <option>June</option>
+                  <option>July</option>
+                  <option>August</option>
+                  <option>September</option>
+                  <option>October</option>
+                  <option>November</option>
+                  <option>December</option>
+                </select>
+              </label>
+              <label>
+                Water temperature (°F)
+                <input type="number" placeholder="52" />
+              </label>
+              <label>
+                Flow rate (cfs)
+                <input type="number" placeholder="1250" />
+              </label>
+              <label>
+                Water clarity
+                <select>
+                  <option>Clear</option>
+                  <option>Slightly murky</option>
+                  <option>Murky</option>
+                </select>
+              </label>
+              <label>
+                Weather
+                <select>
+                  <option>Clear</option>
+                  <option>Overcast</option>
+                  <option>Rainy</option>
+                  <option>Snowy</option>
+                </select>
+              </label>
+              <label>
+                Light level
+                <select>
+                  <option>Bright</option>
+                  <option>Dim</option>
+                  <option>Dark</option>
+                </select>
+              </label>
+            </div>
+            <button class="button primary" type="submit">Calculate top 3 species</button>
+          </form>
+        </section>
+
+        <section id="results" class="section results">
+          <div class="section-heading">
+            <p class="eyebrow">Top 3 results</p>
+            <h2>Probability, accuracy, flies, and depth guidance.</h2>
+            <p class="section-subtitle">
+              The forecast highlights the three most likely species and
+              explains how accurate the model is with your inputs.
+            </p>
+          </div>
+          <div class="result-grid">
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Rainbow trout</h3>
+                <span class="result-score">38% likelihood</span>
+              </div>
+              <div class="result-accuracy">Algorithm accuracy: 92%</div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Parachute Adams</li>
+                  <li>Beadhead Pheasant Tail</li>
+                  <li>Olive Woolly Bugger</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Mid-column drifts along shaded seams and soft edges.</p>
+              </div>
+            </article>
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Brown trout</h3>
+                <span class="result-score">31% likelihood</span>
+              </div>
+              <div class="result-accuracy">Algorithm accuracy: 88%</div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Rusty Midge</li>
+                  <li>Hare’s Ear Nymph</li>
+                  <li>Mini Sculpin Streamer</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Deep runs, undercut banks, and slow current transitions.</p>
+              </div>
+            </article>
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Cutthroat trout</h3>
+                <span class="result-score">24% likelihood</span>
+              </div>
+              <div class="result-accuracy">Algorithm accuracy: 85%</div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Elk Hair Caddis</li>
+                  <li>Soft Hackle Wet Fly</li>
+                  <li>Perdigon Nymph</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Shallow riffles and active surface lanes at low light.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div>
+          <p class="brand">Fish Finder 3000</p>
+          <p>Built to turn every variable into clear fishing decisions.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
