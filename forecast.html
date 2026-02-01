@@ -308,6 +308,20 @@
         return 0.3;
       };
 
+      const lightLevelScalar = (light) => {
+        if (light === "Bright") return 1.0;
+        if (light === "Dim") return 0.6;
+        if (light === "Dark") return 0.3;
+        return 0.6;
+      };
+
+      const clarityScalar = (clarity) => {
+        if (clarity === "Clear") return 1.0;
+        if (clarity === "Slightly murky") return 0.7;
+        if (clarity === "Murky") return 0.5;
+        return 0.7;
+      };
+
       const streamScore = (species, width, unitFlow) => {
         const small = width <= 12;
         const pushy = unitFlow >= 6;
@@ -403,7 +417,7 @@
         return `${minSize}–${maxSize} in`;
       };
 
-      const biteScore = (traits, temp, month, hour, sky) => {
+      const biteScore = (traits, temp, month, hour, sky, light, clarity) => {
         const mu = (traits.preferredMin + traits.preferredMax) / 2;
         const sigma = Math.max(4, (traits.preferredMax - traits.preferredMin) / 2.5);
         let tempComponent = gaussian(temp, mu, sigma);
@@ -413,9 +427,15 @@
           if (hour >= 11 && hour <= 16) timeComponent = 0.85;
           if (hour >= 17 && hour <= 21) timeComponent = 1.1;
         }
-        let lightComponent = 1 - skyToLight(sky) * 0.15;
+        const lightComponent =
+          1 - skyToLight(sky) * 0.1 - lightLevelScalar(light) * 0.1;
+        const clarityComponent = 0.7 + clarityScalar(clarity) * 0.3;
         if (temp > traits.stressAbove) tempComponent *= 0.4;
-        return clamp(tempComponent * timeComponent * lightComponent, 0, 1);
+        return clamp(
+          tempComponent * timeComponent * lightComponent * clarityComponent,
+          0,
+          1
+        );
       };
 
       const habitatReco = (traits, temp, unitFlow, sky, hour) => {
@@ -444,11 +464,11 @@
         const unitFlow = inputs.cfs / Math.max(inputs.width, 1);
         const localBasePrior = planner?.populationDistribution
           ? {
-              rainbow: planner.populationDistribution.rainbow ?? basePrior.rainbow,
-              brown: planner.populationDistribution.brown ?? basePrior.brown,
-              brook: planner.populationDistribution.brook ?? basePrior.brook,
-              whitefish: planner.populationDistribution.whitefish ?? basePrior.whitefish,
-              bull: basePrior.bull,
+              rainbow: planner.populationDistribution.rainbow ?? 0,
+              brown: planner.populationDistribution.brown ?? 0,
+              brook: planner.populationDistribution.brook ?? 0,
+              whitefish: planner.populationDistribution.whitefish ?? 0,
+              bull: planner.populationDistribution.bull ?? 0,
             }
           : basePrior;
         const weights = {};
@@ -472,8 +492,23 @@
           }
           const tempSuit = tempScore(traits, inputs.temp);
           const streamSuit = streamScore(species, inputs.width, unitFlow);
+          const bite = biteScore(
+            traits,
+            inputs.temp,
+            inputs.month,
+            inputs.hour,
+            inputs.sky,
+            inputs.light,
+            inputs.clarity
+          );
+          const activity = 0.6 + bite * 0.6;
           weights[species] =
-            localBasePrior[species] * observed * stock * tempSuit * streamSuit;
+            localBasePrior[species] *
+            observed *
+            stock *
+            tempSuit *
+            streamSuit *
+            activity;
         });
 
         const totalWeight = Object.values(weights).reduce((sum, v) => sum + v, 0);
@@ -488,6 +523,25 @@
           .map(({ species, probability }) => {
             const traits = traitsDB[species];
             const timeWindow = bestWindow(inputs.temp, inputs.month, inputs.sky, species);
+            const bite = biteScore(
+              traits,
+              inputs.temp,
+              inputs.month,
+              inputs.hour,
+              inputs.sky,
+              inputs.light,
+              inputs.clarity
+            );
+            const tempSuit = tempScore(traits, inputs.temp);
+            const confidenceScore = clamp(
+              0.55 +
+                0.25 * tempSuit +
+                0.1 * bite +
+                (planner?.speciesObserved?.includes(species) ? 0.1 : 0),
+              0.5,
+              0.95
+            );
+            const accuracy = Math.round(confidenceScore * 100);
             const flyRecommendations = flyMix(
               species,
               inputs.temp,
@@ -560,6 +614,8 @@
           cfs: inputs.cfs,
           width: inputs.width || plannerDB[inputs.stream]?.defaultWidth || 18,
           sky: inputs.sky,
+          light: inputs.light,
+          clarity: inputs.clarity,
           month,
           hour,
         });
@@ -572,6 +628,8 @@
         cfs: 120,
         width: 18,
         sky: "Overcast",
+        light: "Dim",
+        clarity: "Clear",
         month: 6,
         hour: 10,
       });
