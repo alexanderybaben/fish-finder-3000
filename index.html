@@ -22,38 +22,26 @@
           </div>
           <div class="nav-links">
             <a href="#home">Home</a>
-            <a class="button ghost" href="#signal">Get the forecast</a>
+            <a class="button ghost" href="#forecast">Run the forecast</a>
           </div>
         </nav>
       </header>
 
       <main>
-        <section id="home" class="hero">
+        <section id="home" class="hero compact-hero">
           <div class="hero-content">
-            <p class="eyebrow">Predictive fly fishing intelligence</p>
-            <h1>Know the hatch before it happens.</h1>
+            <p class="eyebrow">One page. One forecast.</p>
+            <h1>Input every condition, get the top 3 species to chase.</h1>
             <p class="lead">
-              Fish Finder 3000 blends river telemetry, weather models, and
-              guide intuition into one forecast. Plan your session with
-              precision, dial in fly selections, and move with the current.
+              Fish Finder 3000 is a single-page intelligence hub where anglers
+              capture stream conditions, time of day, season, and location. Our
+              model ranks catch probability across key trout and salmon species,
+              then surfaces the top three with matching flies and depth
+              guidance.
             </p>
             <div class="hero-actions">
-              <a class="button primary" href="#signal">Run the forecast</a>
-              <a class="button ghost" href="#conditions">See condition layers</a>
-            </div>
-            <div class="hero-metrics">
-              <div>
-                <p class="metric">12</p>
-                <span>live river feeds</span>
-              </div>
-              <div>
-                <p class="metric">87%</p>
-                <span>hatch match accuracy</span>
-              </div>
-              <div>
-                <p class="metric">5 min</p>
-                <span>forecast refresh</span>
-              </div>
+              <a class="button primary" href="#forecast">Start the inputs</a>
+              <a class="button ghost" href="#results">View sample results</a>
             </div>
           </div>
           <div class="hero-art">
@@ -66,9 +54,9 @@
                 <div class="map-line"></div>
               </div>
               <div class="map-tags">
-                <span class="tag">Flow stability</span>
-                <span class="tag">Hatch intensity</span>
-                <span class="tag">Prime seams</span>
+                <span class="tag">Seasonality</span>
+                <span class="tag">Streamflow</span>
+                <span class="tag">Hatch signal</span>
               </div>
             </div>
             <div class="floating-shape shape-one"></div>
@@ -76,115 +64,135 @@
           </div>
         </section>
 
-        <section id="signal" class="section experience">
+        <section id="forecast" class="section forecast">
           <div class="section-heading">
-            <p class="eyebrow">Forecast engine</p>
-            <h2>Algorithm-led predictions, guide-level clarity.</h2>
+            <p class="eyebrow">Forecast inputs</p>
+            <h2>Tell us everything about your stream and timing.</h2>
+            <p class="section-subtitle">
+              Add as much detail as possible. The engine blends every variable
+              into a probability score, then ranks the top three species.
+            </p>
           </div>
-          <div class="cards">
-            <article class="card">
-              <h3>Telemetry fusion</h3>
-              <p>
-                We merge river flow, temperature, and barometric trends to
-                pinpoint the most active windows.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Fly selection logic</h3>
-              <p>
-                Pattern libraries map to species, light, and hatch signals so
-                your box is always in sync.
-              </p>
-            </article>
-            <article class="card">
-              <h3>Adaptive routing</h3>
-              <p>
-                Local guide notes and machine learning highlight river
-                segments with the highest strike potential.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        <section id="conditions" class="section waters">
-          <div class="section-heading">
-            <p class="eyebrow">Condition layers</p>
-            <h2>Every data layer you need before stepping in.</h2>
-          </div>
-          <div class="water-grid">
-            <div class="water-card">
-              <h3>Flow + clarity</h3>
-              <p>Realtime discharge, turbidity, and flow trend signals.</p>
-            </div>
-            <div class="water-card">
-              <h3>Weather + light</h3>
-              <p>Cloud cover, wind, and golden-hour intensity scores.</p>
-            </div>
-            <div class="water-card">
-              <h3>Hatch timing</h3>
-              <p>Emergence windows and surface activity indicators.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="section gear">
-          <div class="section-heading">
-            <p class="eyebrow">Fly match system</p>
-            <h2>Fly recommendations that react to the water.</h2>
-          </div>
-          <div class="gear-layout">
-            <div class="gear-panel">
-              <h3>Pattern ranking</h3>
-              <p>
-                Dry, nymph, and streamer profiles ranked by predicted strike
-                probability.
-              </p>
-              <ul>
-                <li>Adaptive hatch matching</li>
-                <li>Water temperature offsets</li>
-                <li>Species-specific scoring</li>
-              </ul>
-            </div>
-            <div class="gear-panel accent">
-              <h3>Fly box builder</h3>
-              <p>
-                Build a personalized fly box with suggestions from the
-                prediction engine and guide notes.
-              </p>
-              <a class="button ghost" href="#signal">Preview recommendations</a>
-            </div>
-          </div>
-        </section>
-
-        <section class="section contact">
-          <div class="contact-card">
-            <div>
-              <p class="eyebrow">Home base</p>
-              <h2>Get the first forecast drop.</h2>
-              <p>
-                The Fish Finder 3000 home feed keeps your next session centered
-                on conditions, hatches, and fly recommendations.
-              </p>
-            </div>
-            <form class="form">
+          <form class="forecast-form">
+            <div class="input-grid">
               <label>
-                Name
-                <input type="text" placeholder="Alex Rivers" />
+                Stream name
+                <input type="text" placeholder="Upper Deschutes" />
               </label>
               <label>
-                Email
-                <input type="email" placeholder="alex@riverflow.com" />
+                Region
+                <input type="text" placeholder="Central Oregon" />
               </label>
               <label>
-                Target water
-                <select>
-                  <option>High alpine creek</option>
-                  <option>Tailwater river</option>
-                  <option>Coastal estuary</option>
-                </select>
+                Time of day
+                <input type="text" placeholder="Early morning / dusk" />
               </label>
-              <button class="button primary" type="submit">Join the beta</button>
-            </form>
+              <label>
+                Month + season
+                <input type="text" placeholder="May • Spring runoff" />
+              </label>
+              <label>
+                Water temperature
+                <input type="text" placeholder="52°F" />
+              </label>
+              <label>
+                Flow rate
+                <input type="text" placeholder="1,250 cfs" />
+              </label>
+              <label>
+                Water clarity
+                <input type="text" placeholder="Gin clear / stained" />
+              </label>
+              <label>
+                Weather + light
+                <input type="text" placeholder="Overcast, light wind" />
+              </label>
+              <label>
+                Structure notes
+                <input type="text" placeholder="Deep runs, undercut banks" />
+              </label>
+              <label>
+                Hatch activity
+                <input type="text" placeholder="PMD hatch, midges" />
+              </label>
+              <label>
+                Target depth
+                <input type="text" placeholder="3-6 ft seams" />
+              </label>
+              <label>
+                Additional notes
+                <input type="text" placeholder="Recent rain, boat traffic" />
+              </label>
+            </div>
+            <button class="button primary" type="submit">Calculate top 3 species</button>
+          </form>
+        </section>
+
+        <section id="results" class="section results">
+          <div class="section-heading">
+            <p class="eyebrow">Top 3 results</p>
+            <h2>Probability, fly picks, and depth guidance.</h2>
+            <p class="section-subtitle">
+              The model compares rainbow trout, brown trout, bull trout, brook
+              trout, steelhead, salmon, whitehead, greyling, golden trout, tiger
+              trout, and cutthroat trout, then returns the three most likely.
+            </p>
+          </div>
+          <div class="result-grid">
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Rainbow trout</h3>
+                <span class="result-score">38% likelihood</span>
+              </div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Parachute Adams</li>
+                  <li>Beadhead Pheasant Tail</li>
+                  <li>Olive Woolly Bugger</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Mid-column drifts along shaded seams and soft edges.</p>
+              </div>
+            </article>
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Brown trout</h3>
+                <span class="result-score">31% likelihood</span>
+              </div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Rusty Midge</li>
+                  <li>Hare’s Ear Nymph</li>
+                  <li>Mini Sculpin Streamer</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Deep runs, undercut banks, and slow current transitions.</p>
+              </div>
+            </article>
+            <article class="result-card">
+              <div class="result-header">
+                <h3>Cutthroat trout</h3>
+                <span class="result-score">24% likelihood</span>
+              </div>
+              <div class="result-section">
+                <h4>Fly recommendations</h4>
+                <ul>
+                  <li>Elk Hair Caddis</li>
+                  <li>Soft Hackle Wet Fly</li>
+                  <li>Perdigon Nymph</li>
+                </ul>
+              </div>
+              <div class="result-section">
+                <h4>Depth + water position</h4>
+                <p>Shallow riffles and active surface lanes at low light.</p>
+              </div>
+            </article>
           </div>
         </section>
       </main>
@@ -192,7 +200,7 @@
       <footer class="footer">
         <div>
           <p class="brand">Fish Finder 3000</p>
-          <p>Predictive fly fishing intelligence built for modern anglers.</p>
+          <p>Built to turn every variable into clear fishing decisions.</p>
         </div>
       </footer>
     </div>

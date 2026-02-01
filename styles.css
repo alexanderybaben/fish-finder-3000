@@ -118,6 +118,10 @@ a {
   padding-top: 2rem;
 }
 
+.compact-hero {
+  padding-top: 1rem;
+}
+
 .hero-content h1 {
   font-size: clamp(2.4rem, 3.5vw, 4rem);
   line-height: 1.05;
@@ -260,6 +264,85 @@ a {
 
 .section-heading h2 {
   font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+}
+
+.section-subtitle {
+  color: var(--muted);
+  max-width: 640px;
+}
+
+.forecast-form {
+  display: grid;
+  gap: var(--box-gap);
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--box-gap);
+}
+
+.input-grid label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.input-grid input {
+  background: #0d1b14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 0.75rem 0.9rem;
+  color: var(--text);
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--box-gap);
+}
+
+.result-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.result-score {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.result-section h4 {
+  margin-bottom: 0.6rem;
+}
+
+.result-section ul {
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+  color: var(--muted);
+}
+
+.result-section ul li::before {
+  content: "•";
+  color: var(--accent);
+  margin-right: 0.6rem;
+}
+
+.result-section p {
+  color: var(--muted);
 }
 
 .cards {
