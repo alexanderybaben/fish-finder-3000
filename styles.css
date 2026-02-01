@@ -14,6 +14,7 @@
   --text: #e6f5ee;
   --muted: #9db6aa;
   --glass: rgba(23, 52, 37, 0.7);
+  --box-gap: 1.75rem;
 }
 
 body {
@@ -147,7 +148,7 @@ a {
 .hero-metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1.5rem;
+  gap: var(--box-gap);
 }
 
 .metric {
@@ -264,7 +265,7 @@ a {
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  gap: var(--box-gap);
 }
 
 .card {
@@ -286,7 +287,7 @@ a {
 .water-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 1.5rem;
+  gap: var(--box-gap);
 }
 
 .water-card {
@@ -317,7 +318,7 @@ a {
 .gear-layout {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  gap: var(--box-gap);
 }
 
 .gear-panel {
