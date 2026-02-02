@@ -122,10 +122,6 @@
                   <option>Dark</option>
                 </select>
               </label>
-              <label>
-                Date
-                <input name="date" type="date" />
-              </label>
             </div>
             <button class="button primary" type="submit">Calculate top 3 species</button>
           </form>
@@ -601,11 +597,9 @@
           clarity: form.elements.clarity.value,
           sky: form.elements.weather.value,
           light: form.elements.light.value,
-          date: form.elements.date.value,
         };
 
-        const monthFromDate = inputs.date ? new Date(inputs.date).getMonth() + 1 : null;
-        const month = monthFromDate || getMonth(inputs.monthName);
+        const month = getMonth(inputs.monthName);
         const hour = mapTimeOfDay(inputs.timeOfDay);
 
         buildResults({
